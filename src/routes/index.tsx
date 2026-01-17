@@ -138,16 +138,12 @@ function Home() {
       {/* --- Navigation --- */}
       <nav className="flex items-center justify-between px-8 py-6 bg-white">
         <div className="flex items-center gap-2">
-          {/* Logo Placeholder */}
-          <Image src="../../public/2.svg" alt="Logo" width={100} height={100} />
-          <div className="flex flex-col leading-none">
-            <span className="text-[34px] font-black text-cyan-600 tracking-tighter">
-              MUSNEST
-            </span>
-            <span className="text-[23px] font-bold text-slate-700 tracking-[0.2em]">
-              Finance
-            </span>
-          </div>
+          <Image
+            src="/2.svg"
+            alt="Musnest Finance logo"
+            width={100}
+            height={100}
+          />
         </div>
 
         <div className="hidden md:flex items-center gap-8 text-slate-600 font-medium">
@@ -168,9 +164,9 @@ function Home() {
       {/* --- Hero Section --- */}
       <section className="relative overflow-hidden bg-[#0081B4]">
         {/* Background Gradient Mix */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1b85b3] via-[#00a6a9] to-[#0081B4]"></div>
+        <div className="absolute inset-0 bg-linear-to-r from-[#1b85b3] via-[#00a6a9] to-[#0081B4]"></div>
 
-        <div className="relative max-w-7xl mx-auto flex flex-col lg:flex-row items-center min-h-[500px]">
+        <div className="relative max-w-7xl mx-auto flex flex-col lg:flex-row items-center min-h-125">
           {/* Left Side: Imagery */}
           <div className="w-4/12 lg:w-1/2 relative flex justify-center items-end self-end">
             {/* Note: In a real app, you would use an <img> tag here. 
@@ -271,12 +267,12 @@ function Home() {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-2xl font-bold text-[#0081B4] leading-tight mb-4 min-h-[3.5rem] flex items-center justify-center">
+                <h3 className="text-2xl font-bold text-[#0081B4] leading-tight mb-4 min-h-14 flex items-center justify-center">
                   {service.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-slate-600 text-sm leading-relaxed max-w-[250px]">
+                <p className="text-slate-600 text-sm leading-relaxed max-w-62.5">
                   {service.description}
                 </p>
               </div>
@@ -381,13 +377,12 @@ function Home() {
               {/* Message */}
               <Textarea
                 placeholder="How can we help you?"
-                className="bg-white border-none min-h-[150px] rounded-xl placeholder:text-slate-400 pt-8 text-center resize-none"
+                className="bg-white border-none min-h-37.5 rounded-xl placeholder:text-slate-400 pt-8 text-center resize-none"
               />
             </form>
           </div>
         </div>
       </section>
-      );
     </div>
   )
 }
