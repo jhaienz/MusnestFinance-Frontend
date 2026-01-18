@@ -10,10 +10,55 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useState } from 'react'
+import { useMutation } from '@tanstack/react-query'
+import { sendHelpCenter } from '@/api/endpoints'
+import { AlertCircle, CheckCircle2, Loader2 } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 export const Route = createFileRoute('/')({ component: Home })
 
 function Home() {
+  const [contactFirstName, setContactFirstName] = useState('')
+  const [contactLastName, setContactLastName] = useState('')
+  const [companyName, setCompanyName] = useState('')
+  const [contactNumber, setContactNumber] = useState('')
+  const [contactEmail, setContactEmail] = useState('')
+  const [clientMessage, setClientMessage] = useState('')
+
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
+
+  const sendHelpCenterMutation = useMutation({
+    mutationFn: sendHelpCenter,
+    onSuccess: () => {
+      setStatus('success')
+      // Clear form fields
+      setContactFirstName('')
+      setContactLastName('')
+      setCompanyName('')
+      setContactNumber('')
+      setContactEmail('')
+      setClientMessage('')
+    },
+    onError: (error) => {
+      setStatus('error')
+      console.error('Error sending help center data', error)
+    },
+  })
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setStatus('idle')
+    sendHelpCenterMutation.mutate({
+      contactFirstName,
+      contactLastName,
+      companyName,
+      contactNumber,
+      contactEmail,
+      clientMessage,
+    })
+  }
+
   const services = [
     {
       title: 'Bank-ready Files',
@@ -144,6 +189,14 @@ function Home() {
             width={100}
             height={100}
           />
+          <div className="flex flex-col leading-none">
+            <span className="text-[50px] font-black text-cyan-600 tracking-tighter">
+              MUSNEST
+            </span>
+            <span className="text-[30px] font-bold text-slate-700 tracking-[0.2em]">
+              Finance
+            </span>
+          </div>
         </div>
 
         <div className="hidden md:flex items-center gap-8 text-slate-600 font-medium">
@@ -314,6 +367,30 @@ function Home() {
             </h3>
 
             <form className="space-y-4">
+              {status === 'success' && (
+                <Alert className="bg-emerald-50 border-emerald-200 text-emerald-800 animate-in fade-in duration-500">
+                  <CheckCircle2 className="h-4 w-4 stroke-emerald-600" />
+                  <AlertTitle>Sent Successfully</AlertTitle>
+                  <AlertDescription>
+                    Thank you, {contactFirstName}! Your message has been sent to
+                    our team.
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              {status === 'error' && (
+                <Alert
+                  variant="destructive"
+                  className="animate-in zoom-in-95 duration-300"
+                >
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Submission Failed</AlertTitle>
+                  <AlertDescription>
+                    We couldn't process your request. Please check your details
+                    and try again.
+                  </AlertDescription>
+                </Alert>
+              )}
               <div className="grid grid-cols-12 gap-4">
                 {/* Title Select */}
                 <div className="col-span-3">
@@ -332,6 +409,9 @@ function Home() {
                 {/* First Name */}
                 <div className="col-span-9">
                   <Input
+                    type="firstname"
+                    value={contactFirstName}
+                    onChange={(e) => setContactFirstName(e.target.value)}
                     placeholder="First Name"
                     className="bg-white border-none h-12 rounded-lg placeholder:text-slate-400"
                   />
@@ -340,12 +420,18 @@ function Home() {
 
               {/* Last Name */}
               <Input
+                type="lastname"
+                value={contactLastName}
+                onChange={(e) => setContactLastName(e.target.value)}
                 placeholder="Last Name"
                 className="bg-white border-none h-12 rounded-lg placeholder:text-slate-400"
               />
 
               {/* Company Name */}
               <Input
+                type="companyName"
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
                 placeholder="Company Name"
                 className="bg-white border-none h-12 rounded-lg placeholder:text-slate-400 text-center"
               />
@@ -361,6 +447,9 @@ function Home() {
                 {/* Mobile Number */}
                 <div className="col-span-9">
                   <Input
+                    type="contactNumber"
+                    value={contactNumber}
+                    onChange={(e) => setContactNumber(e.target.value)}
                     placeholder="Mobile Number"
                     className="bg-white border-none h-12 rounded-lg placeholder:text-slate-400 text-center"
                   />
@@ -369,16 +458,36 @@ function Home() {
 
               {/* Email */}
               <Input
-                type="email"
+                type="contactEmail"
+                value={contactEmail}
+                onChange={(e) => setContactEmail(e.target.value)}
                 placeholder="Email"
                 className="bg-white border-none h-12 rounded-lg placeholder:text-slate-400 text-center"
               />
 
               {/* Message */}
               <Textarea
+                value={clientMessage}
+                onChange={(e) => setClientMessage(e.target.value)}
                 placeholder="How can we help you?"
                 className="bg-white border-none min-h-37.5 rounded-xl placeholder:text-slate-400 pt-8 text-center resize-none"
               />
+              <div className="flex flex-wrap gap-4">
+                <Button
+                  onClick={handleSubmit}
+                  size="lg"
+                  className="bg-[#0081B4] hover:bg-[#006a94] text-white px-10 py-7 rounded-full text-xl font-semibold"
+                >
+                  {sendHelpCenterMutation.isPending ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    'Submit'
+                  )}
+                </Button>
+              </div>
             </form>
           </div>
         </div>
