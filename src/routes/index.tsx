@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Image } from '@unpic/react'
 import { Input } from '@/components/ui/input'
@@ -247,20 +247,24 @@ function Home() {
               </h1>
 
               <div className="flex flex-wrap gap-4">
-                <Button
-                  size="lg"
-                  className="bg-[#0081B4] hover:bg-[#006a94] text-white px-10 py-7 rounded-full text-xl font-semibold"
-                >
-                  Register
-                </Button>
+                <Link to="/login/client">
+                  <Button
+                    size="lg"
+                    className="bg-[#0081B4] hover:bg-[#006a94] text-white px-10 py-7 rounded-full text-xl font-semibold"
+                  >
+                    Register
+                  </Button>
+                </Link>
 
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-2 border-[#0081B4] text-[#0081B4] hover:bg-cyan-50 px-10 py-7 rounded-full text-xl font-semibold"
-                >
-                  Sign In
-                </Button>
+                <Link to="/login/client">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="border-2 border-[#0081B4] text-[#0081B4] hover:bg-cyan-50 px-10 py-7 rounded-full text-xl font-semibold"
+                  >
+                    Sign In
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

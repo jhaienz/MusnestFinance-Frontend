@@ -10,33 +10,102 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LoginClientRouteImport } from './routes/login/client'
+import { Route as LoginAdminRouteImport } from './routes/login/admin'
+import { Route as DashboardProfileRouteImport } from './routes/dashboard/profile'
+import { Route as DashboardOurNestRouteImport } from './routes/dashboard/our-nest'
+import { Route as DashboardClientRouteImport } from './routes/dashboard/client'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginClientRoute = LoginClientRouteImport.update({
+  id: '/login/client',
+  path: '/login/client',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginAdminRoute = LoginAdminRouteImport.update({
+  id: '/login/admin',
+  path: '/login/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardProfileRoute = DashboardProfileRouteImport.update({
+  id: '/dashboard/profile',
+  path: '/dashboard/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardOurNestRoute = DashboardOurNestRouteImport.update({
+  id: '/dashboard/our-nest',
+  path: '/dashboard/our-nest',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardClientRoute = DashboardClientRouteImport.update({
+  id: '/dashboard/client',
+  path: '/dashboard/client',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard/client': typeof DashboardClientRoute
+  '/dashboard/our-nest': typeof DashboardOurNestRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
+  '/login/admin': typeof LoginAdminRoute
+  '/login/client': typeof LoginClientRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard/client': typeof DashboardClientRoute
+  '/dashboard/our-nest': typeof DashboardOurNestRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
+  '/login/admin': typeof LoginAdminRoute
+  '/login/client': typeof LoginClientRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard/client': typeof DashboardClientRoute
+  '/dashboard/our-nest': typeof DashboardOurNestRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
+  '/login/admin': typeof LoginAdminRoute
+  '/login/client': typeof LoginClientRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/dashboard/client'
+    | '/dashboard/our-nest'
+    | '/dashboard/profile'
+    | '/login/admin'
+    | '/login/client'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/dashboard/client'
+    | '/dashboard/our-nest'
+    | '/dashboard/profile'
+    | '/login/admin'
+    | '/login/client'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard/client'
+    | '/dashboard/our-nest'
+    | '/dashboard/profile'
+    | '/login/admin'
+    | '/login/client'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardClientRoute: typeof DashboardClientRoute
+  DashboardOurNestRoute: typeof DashboardOurNestRoute
+  DashboardProfileRoute: typeof DashboardProfileRoute
+  LoginAdminRoute: typeof LoginAdminRoute
+  LoginClientRoute: typeof LoginClientRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +117,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login/client': {
+      id: '/login/client'
+      path: '/login/client'
+      fullPath: '/login/client'
+      preLoaderRoute: typeof LoginClientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/admin': {
+      id: '/login/admin'
+      path: '/login/admin'
+      fullPath: '/login/admin'
+      preLoaderRoute: typeof LoginAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/profile': {
+      id: '/dashboard/profile'
+      path: '/dashboard/profile'
+      fullPath: '/dashboard/profile'
+      preLoaderRoute: typeof DashboardProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/our-nest': {
+      id: '/dashboard/our-nest'
+      path: '/dashboard/our-nest'
+      fullPath: '/dashboard/our-nest'
+      preLoaderRoute: typeof DashboardOurNestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/client': {
+      id: '/dashboard/client'
+      path: '/dashboard/client'
+      fullPath: '/dashboard/client'
+      preLoaderRoute: typeof DashboardClientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardClientRoute: DashboardClientRoute,
+  DashboardOurNestRoute: DashboardOurNestRoute,
+  DashboardProfileRoute: DashboardProfileRoute,
+  LoginAdminRoute: LoginAdminRoute,
+  LoginClientRoute: LoginClientRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
