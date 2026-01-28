@@ -17,8 +17,13 @@ function ClientLogin() {
 
   const clientLoginMutation = useMutation({
     mutationFn: clientLogin,
-    onSuccess: () => {
+    onSuccess: (data) => {
       navigate({ to: '/dashboard/client' })
+      const { token } = data
+
+      if (token) {
+        sessionStorage.setItem('clientToken', token)
+      }
     },
     onError: (error) => {
       console.error('Error sending login credentials', error)
