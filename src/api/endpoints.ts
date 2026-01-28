@@ -20,3 +20,8 @@ export const clientLogin = async (data: {
   const response = await api.post('/clients/login', data)
   return response.data
 }
+
+export const adminLogin = async (data: { email: string; password: string }) => {
+  const response = await api.post('/admins/login', data)
+  return response.data
+}

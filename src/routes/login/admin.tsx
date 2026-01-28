@@ -4,6 +4,8 @@ import { Input } from '@/components/ui/input'
 import { Image } from '@unpic/react'
 import { useState } from 'react'
 import { ShieldCheck } from 'lucide-react'
+import { useMutation } from '@tanstack/react-query'
+import { adminLogin } from '@/api/endpoints'
 
 export const Route = createFileRoute('/login/admin')({ component: AdminLogin })
 
@@ -11,10 +13,25 @@ function AdminLogin() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  const adminLoginMutation = useMutation({
+    mutationFn: adminLogin,
+    onSuccess: (data) => {
+      const { token } = data
+
+      if (token) {
+        sessionStorage.setItem('adminToken', token)
+      }
+
+      //  to add navigate to admin dashboard soon
+    },
+    onError: (error) => {
+      console.error('Error sending admin login credentials', error)
+    },
+  })
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle admin login logic here
-    console.log('Admin login:', { email, password })
+    adminLoginMutation.mutate({ email, password })
   }
 
   return (
@@ -64,9 +81,7 @@ function AdminLogin() {
               <h1 className="text-4xl font-extrabold text-[#2D4356] mb-2">
                 Admin Login
               </h1>
-              <p className="text-slate-600">
-                Access administrative dashboard
-              </p>
+              <p className="text-slate-600">Access administrative dashboard</p>
             </div>
 
             {/* Login Form */}
