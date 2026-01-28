@@ -12,3 +12,11 @@ export const sendHelpCenter = async (data: {
   const response = await api.post('/clients/', data)
   return response.data
 }
+
+export const clientLogin = async (data: {
+  contactEmail: string
+  password: string
+}) => {
+  const response = await api.post('/clients/login', data)
+  return response.data
+}

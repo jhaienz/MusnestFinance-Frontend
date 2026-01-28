@@ -3,18 +3,36 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Image } from '@unpic/react'
 import { useState } from 'react'
+import { useMutation } from '@tanstack/react-query'
+import { clientLogin } from '@/api/endpoints'
 
-export const Route = createFileRoute('/login/client')({ component: ClientLogin })
+export const Route = createFileRoute('/login/client')({
+  component: ClientLogin,
+})
 
 function ClientLogin() {
   const navigate = useNavigate()
-  const [email, setEmail] = useState('')
+  const [contactEmail, setContactEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  const clientLoginMutation = useMutation({
+    mutationFn: clientLogin,
+    onSuccess: () => {
+      navigate({ to: '/dashboard/client' })
+    },
+    onError: (error) => {
+      console.error('Error sending login credentials', error)
+    },
+  })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Handle client login logic here
-    console.log('Client login:', { email, password })
+    console.log('Client login:', { contactEmail, password })
+    clientLoginMutation.mutate({
+      contactEmail,
+      password,
+    })
 
     // Navigate to dashboard after successful login
     navigate({ to: '/dashboard/client' })
@@ -62,9 +80,7 @@ function ClientLogin() {
               <h1 className="text-4xl font-extrabold text-[#2D4356] mb-2">
                 Client Login
               </h1>
-              <p className="text-slate-600">
-                Access your financial dashboard
-              </p>
+              <p className="text-slate-600">Access your financial dashboard</p>
             </div>
 
             {/* Login Form */}
@@ -80,8 +96,8 @@ function ClientLogin() {
                 <Input
                   id="email"
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={contactEmail}
+                  onChange={(e) => setContactEmail(e.target.value)}
                   placeholder="Enter your email"
                   className="h-12 rounded-lg border-slate-200"
                   required
