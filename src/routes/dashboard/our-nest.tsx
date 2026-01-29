@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-router'
 import { Image } from '@unpic/react'
 import { useState, useEffect } from 'react'
-import { Upload, Plus, CheckCircle2 } from 'lucide-react'
+import { Upload, Plus, CheckCircle2, LogOut, User, ChevronDown } from 'lucide-react'
 import {
   Select,
   SelectContent,
@@ -14,7 +14,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { isAuthenticated, isAuthenticatedClient } from '@/lib/auth'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { isAuthenticated, isAuthenticatedClient, clearToken } from '@/lib/auth'
 
 export const Route = createFileRoute('/dashboard/our-nest')({
   beforeLoad: () => {
@@ -134,12 +141,32 @@ function OurNest() {
             >
               Our Nest
             </Link>
-            <Link
-              to="/dashboard/profile"
-              className="hover:text-cyan-100 transition-colors"
-            >
-              Profile
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-1 hover:text-cyan-100 transition-colors outline-none">
+                <User className="w-4 h-4" />
+                Profile
+                <ChevronDown className="w-4 h-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem asChild>
+                  <Link to="/dashboard/profile" className="cursor-pointer">
+                    <User className="w-4 h-4 mr-2" />
+                    My Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="text-red-600 focus:text-red-600 cursor-pointer"
+                  onClick={() => {
+                    clearToken('client')
+                    navigate({ to: '/login/client' })
+                  }}
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </nav>
         </div>
       </header>
