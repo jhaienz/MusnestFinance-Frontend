@@ -87,3 +87,11 @@ export function isAuthenticatedClient(role: UserRole): boolean {
 
   return payload.role === role
 }
+
+// Get client ID from JWT token (sub field)
+export function getClientId(): string | null {
+  const token = getToken('client')
+  if (!token) return null
+  const payload = decodeJwt(token)
+  return (payload?.sub as string) || null
+}
