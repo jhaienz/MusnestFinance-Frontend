@@ -18,11 +18,11 @@ function ClientLogin() {
   const clientLoginMutation = useMutation({
     mutationFn: clientLogin,
     onSuccess: (data) => {
-      navigate({ to: '/dashboard/client' })
       const { token } = data
 
       if (token) {
         sessionStorage.setItem('clientToken', token)
+        navigate({ to: '/dashboard/client' })
       }
     },
     onError: (error) => {
@@ -32,15 +32,10 @@ function ClientLogin() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle client login logic here
-    console.log('Client login:', { contactEmail, password })
     clientLoginMutation.mutate({
       contactEmail,
       password,
     })
-
-    // Navigate to dashboard after successful login
-    navigate({ to: '/dashboard/client' })
   }
 
   return (

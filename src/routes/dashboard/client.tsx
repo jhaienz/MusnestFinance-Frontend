@@ -1,14 +1,33 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import {
+  createFileRoute,
+  Link,
+  redirect,
+  useNavigate,
+} from '@tanstack/react-router'
 import { Image } from '@unpic/react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CheckCircle2, XCircle } from 'lucide-react'
+import { isAuthenticated, isAuthenticatedClient } from '@/lib/auth'
 
 export const Route = createFileRoute('/dashboard/client')({
+  beforeLoad: () => {
+    if (!isAuthenticated('client')) {
+      throw redirect({ to: '/login/client' })
+    }
+  },
   component: ClientDashboard,
 })
 
 function ClientDashboard() {
+  const navigate = useNavigate()
   const [viewMode, setViewMode] = useState<'income' | 'expense'>('income')
+
+  // Client-side auth check after hydration
+  useEffect(() => {
+    if (!isAuthenticatedClient('client')) {
+      navigate({ to: '/login/client' })
+    }
+  }, [navigate])
   const [timeView, setTimeView] = useState<
     'total' | 'annual' | 'quarter' | 'month'
   >('month')

@@ -1,17 +1,35 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import {
+  createFileRoute,
+  Link,
+  redirect,
+  useNavigate,
+} from '@tanstack/react-router'
 import { Image } from '@unpic/react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Upload, FileText } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { Button } from '@/components/ui/button'
+import { isAuthenticated, isAuthenticatedClient } from '@/lib/auth'
 
 export const Route = createFileRoute('/dashboard/profile')({
+  beforeLoad: () => {
+    if (!isAuthenticated('client')) {
+      throw redirect({ to: '/login/client' })
+    }
+  },
   component: Profile,
 })
 
 function Profile() {
+  const navigate = useNavigate()
   const [companyName, setCompanyName] = useState('')
+
+  // Client-side auth check after hydration
+  useEffect(() => {
+    if (!isAuthenticatedClient('client')) {
+      navigate({ to: '/login/client' })
+    }
+  }, [navigate])
   const [companyEmail, setCompanyEmail] = useState('')
   const [companyAddress, setCompanyAddress] = useState('')
   const [firstName, setFirstName] = useState('')

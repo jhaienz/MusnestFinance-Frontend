@@ -1,6 +1,11 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import {
+  createFileRoute,
+  Link,
+  redirect,
+  useNavigate,
+} from '@tanstack/react-router'
 import { Image } from '@unpic/react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Upload, Plus, CheckCircle2 } from 'lucide-react'
 import {
   Select,
@@ -9,8 +14,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { isAuthenticated, isAuthenticatedClient } from '@/lib/auth'
 
 export const Route = createFileRoute('/dashboard/our-nest')({
+  beforeLoad: () => {
+    if (!isAuthenticated('client')) {
+      throw redirect({ to: '/login/client' })
+    }
+  },
   component: OurNest,
 })
 
@@ -23,10 +34,18 @@ interface DataEntry {
 }
 
 function OurNest() {
+  const navigate = useNavigate()
   const [incomeMonth, setIncomeMonth] = useState('January')
   const [incomeYear, setIncomeYear] = useState('2026')
   const [expenseMonth, setExpenseMonth] = useState('January')
   const [expenseYear, setExpenseYear] = useState('2026')
+
+  // Client-side auth check after hydration
+  useEffect(() => {
+    if (!isAuthenticatedClient('client')) {
+      navigate({ to: '/login/client' })
+    }
+  }, [navigate])
 
   // Sample data - replace with actual API data
   const [incomeEntries, setIncomeEntries] = useState<DataEntry[]>([
