@@ -2,10 +2,13 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Image } from '@unpic/react'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { useState } from 'react'
 import { ShieldCheck } from 'lucide-react'
 import { useMutation } from '@tanstack/react-query'
 import { adminLogin } from '@/api/endpoints'
+import { Loader2, AlertCircle } from 'lucide-react'
+import { AxiosError } from 'axios'
 
 export const Route = createFileRoute('/login/admin')({ component: AdminLogin })
 
@@ -83,7 +86,22 @@ function AdminLogin() {
               </h1>
               <p className="text-slate-600">Access administrative dashboard</p>
             </div>
-
+            {adminLoginMutation.isError && (
+              <Alert
+                variant="destructive"
+                className="mb-6 border-red-200 bg-red-50 text-red-800"
+              >
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  {(
+                    adminLoginMutation.error as AxiosError<{
+                      message?: string
+                    }>
+                  )?.response?.data?.message ||
+                    'Invalid email or password. Please try again.'}
+                </AlertDescription>
+              </Alert>
+            )}
             {/* Login Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email Input */}
@@ -98,6 +116,7 @@ function AdminLogin() {
                   id="email"
                   type="email"
                   value={email}
+                  disabled={adminLoginMutation.isPending}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter admin email"
                   className="h-12 rounded-lg border-slate-200"
@@ -117,6 +136,7 @@ function AdminLogin() {
                   id="password"
                   type="password"
                   value={password}
+                  disabled={adminLoginMutation.isPending}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter admin password"
                   className="h-12 rounded-lg border-slate-200"
@@ -139,8 +159,16 @@ function AdminLogin() {
                 type="submit"
                 size="lg"
                 className="w-full bg-[#0081B4] hover:bg-[#006a94] text-white py-6 rounded-full text-lg font-semibold"
+                disabled={adminLoginMutation.isPending}
               >
-                Sign In as Admin
+                {adminLoginMutation.isPending ? (
+                  <>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    Signing In...
+                  </>
+                ) : (
+                  'Sign In'
+                )}
               </Button>
 
               {/* Security Notice */}

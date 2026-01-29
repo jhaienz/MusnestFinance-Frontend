@@ -1,10 +1,13 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Image } from '@unpic/react'
 import { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { clientLogin } from '@/api/endpoints'
+import { Loader2, AlertCircle } from 'lucide-react'
+import { AxiosError } from 'axios'
 
 export const Route = createFileRoute('/login/client')({
   component: ClientLogin,
@@ -83,6 +86,21 @@ function ClientLogin() {
               <p className="text-slate-600">Access your financial dashboard</p>
             </div>
 
+            {/* Error Alert */}
+            {clientLoginMutation.isError && (
+              <Alert
+                variant="destructive"
+                className="mb-6 border-red-200 bg-red-50 text-red-800"
+              >
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  {(clientLoginMutation.error as AxiosError<{ message?: string }>)
+                    ?.response?.data?.message ||
+                    'Invalid email or password. Please try again.'}
+                </AlertDescription>
+              </Alert>
+            )}
+
             {/* Login Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email Input */}
@@ -100,6 +118,7 @@ function ClientLogin() {
                   onChange={(e) => setContactEmail(e.target.value)}
                   placeholder="Enter your email"
                   className="h-12 rounded-lg border-slate-200"
+                  disabled={clientLoginMutation.isPending}
                   required
                 />
               </div>
@@ -119,6 +138,7 @@ function ClientLogin() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   className="h-12 rounded-lg border-slate-200"
+                  disabled={clientLoginMutation.isPending}
                   required
                 />
               </div>
@@ -137,9 +157,17 @@ function ClientLogin() {
               <Button
                 type="submit"
                 size="lg"
-                className="w-full bg-[#0081B4] hover:bg-[#006a94] text-white py-6 rounded-full text-lg font-semibold"
+                className="w-full bg-[#0081B4] hover:bg-[#006a94] text-white py-6 rounded-full text-lg font-semibold disabled:opacity-70"
+                disabled={clientLoginMutation.isPending}
               >
-                Sign In
+                {clientLoginMutation.isPending ? (
+                  <>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    Signing In...
+                  </>
+                ) : (
+                  'Sign In'
+                )}
               </Button>
 
               {/* Divider */}
