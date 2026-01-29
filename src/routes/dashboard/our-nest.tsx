@@ -102,7 +102,7 @@ function OurNest() {
   return (
     <div className="min-h-screen bg-[#f0f7ff] font-sans">
       {/* Header */}
-      <header className="bg-gradient-to-r from-[#0081B4] to-[#00a6a9] px-8 py-4">
+      <header className="bg-linear-to-r from-[#0081B4] to-[#00a6a9] px-8 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Image
@@ -147,7 +147,7 @@ function OurNest() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-8 py-8 space-y-8">
         {/* Income Nest Section */}
-        <section className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-3xl p-8 shadow-lg border-2 border-emerald-100">
+        <section className="bg-linear-to-br from-emerald-50 to-green-50 rounded-3xl p-8 shadow-lg border-2 border-emerald-100">
           <div className="flex items-start justify-between mb-6">
             <div>
               <h2 className="text-3xl font-bold text-[#2D4356] mb-2">
@@ -217,7 +217,8 @@ function OurNest() {
                       {entry.description}
                     </td>
                     <td className="px-6 py-4 text-slate-700 font-medium">
-                      ₱{entry.amount.toLocaleString('en-PH', {
+                      ₱
+                      {entry.amount.toLocaleString('en-PH', {
                         minimumFractionDigits: 2,
                       })}
                     </td>
@@ -260,7 +261,7 @@ function OurNest() {
         </section>
 
         {/* Expense Nest Section */}
-        <section className="bg-gradient-to-br from-red-50 to-rose-50 rounded-3xl p-8 shadow-lg border-2 border-red-100">
+        <section className="bg-linear-to-br from-red-50 to-rose-50 rounded-3xl p-8 shadow-lg border-2 border-red-100">
           <div className="flex items-start justify-between mb-6">
             <div>
               <h2 className="text-3xl font-bold text-[#2D4356] mb-2">
@@ -330,7 +331,8 @@ function OurNest() {
                       {entry.description}
                     </td>
                     <td className="px-6 py-4 text-slate-700 font-medium">
-                      ₱{entry.amount.toLocaleString('en-PH', {
+                      ₱
+                      {entry.amount.toLocaleString('en-PH', {
                         minimumFractionDigits: 2,
                       })}
                     </td>

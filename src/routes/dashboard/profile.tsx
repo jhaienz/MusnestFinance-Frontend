@@ -47,7 +47,7 @@ function Profile() {
   return (
     <div className="min-h-screen bg-[#f0f7ff] font-sans">
       {/* Header */}
-      <header className="bg-gradient-to-r from-[#0081B4] to-[#00a6a9] px-8 py-4">
+      <header className="bg-linear-to-r from-[#0081B4] to-[#00a6a9] px-8 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Image
@@ -107,8 +107,8 @@ function Profile() {
               </button>
 
               <p className="text-xs text-slate-500 mt-4 leading-relaxed">
-                Must be in PNG format with transparent background, at least
-                1080 x 1080 px resolution.
+                Must be in PNG format with transparent background, at least 1080
+                x 1080 px resolution.
               </p>
             </div>
           </div>
